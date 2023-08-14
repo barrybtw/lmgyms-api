@@ -27,7 +27,7 @@ export const user = pgTable(
 
 export const user_relations = relations(user, ({ many }) => ({
   session: many(session),
-  calendar: many(calendar_to_user_relations),
+  calendar: many(calendar_participant),
 }));
 
 export const session = pgTable(
@@ -68,7 +68,7 @@ export const calendar = pgTable(
 );
 
 export const calendar_relations = relations(calendar, ({ many }) => ({
-  calendar_to_user_relations: many(calendar_to_user_relations),
+  calendar_to_user_relations: many(calendar_participant),
 }));
 
 export const calendar_participant = pgTable(
