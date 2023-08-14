@@ -4,6 +4,7 @@ import {
   varchar,
   uniqueIndex,
   timestamp,
+  primaryKey,
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
@@ -70,11 +71,16 @@ export const calendar_relations = relations(calendar, ({ many }) => ({
   calendar_to_user_relations: many(calendar_to_user_relations),
 }));
 
-export const calendar_participant = pgTable('calendar_participant', {
-  id: serial('id').primaryKey(),
-  calendar_id: serial('calendar_id').notNull(),
-  user_id: serial('user_id').notNull(),
-});
+export const calendar_participant = pgTable(
+  'calendar_participant',
+  {
+    calendar_id: serial('calendar_id').notNull(),
+    user_id: serial('user_id').notNull(),
+  },
+  (t) => ({
+    pk: primaryKey(t.user_id, t.calendar_id),
+  }),
+);
 
 export const calendar_to_user_relations = relations(
   calendar_participant,
