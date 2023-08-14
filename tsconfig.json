@@ -27,7 +27,7 @@
     "useDefineForClassFields": true,
     "skipLibCheck": true
   },
-  "include": ["src"],
+  "include": ["src", "drizzle.config.mts"],
   "exclude": ["node_modules", "dist"],
   "ts-node": {
     "swc": true,
