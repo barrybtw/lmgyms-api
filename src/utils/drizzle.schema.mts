@@ -5,6 +5,7 @@ import {
   uniqueIndex,
   timestamp,
   primaryKey,
+  pgEnum,
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
@@ -58,7 +59,6 @@ export const calendar = pgTable(
     name: varchar('name', { length: 255 }).notNull(),
     description: varchar('description', { length: 255 }),
     time_of_creation: timestamp('creation_date').defaultNow(),
-    author_id: serial('author_id').notNull(),
   },
   (table) => {
     return {
@@ -71,11 +71,18 @@ export const calendar_relations = relations(calendar, ({ many }) => ({
   calendar_to_user_relations: many(calendar_participant),
 }));
 
+export const permission_enum = pgEnum('permission_enum', [
+  'owner',
+  'participant',
+  'unknown',
+]);
+
 export const calendar_participant = pgTable(
   'calendar_participant',
   {
     calendar_id: serial('calendar_id').notNull(),
     user_id: serial('user_id').notNull(),
+    permission: permission_enum('permission_enum').default('participant'),
   },
   (t) => ({
     pk: primaryKey(t.user_id, t.calendar_id),
